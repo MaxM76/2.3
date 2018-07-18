@@ -89,13 +89,12 @@ switch ($action) {
             putenv('GDFONTPATH=' . realpath('.'));
             $certificateImage = imagecreatetruecolor(1024, 722);
             $textColor = imagecolorallocate($certificateImage, 0, 0, 0);
-            $fontFile = 'xsfont.ttf';
+            $fontFile = 'Xiomara-Script.ttf';
             $imBox = imagecreatefromjpeg('blank.jpg');
             imagecopy($certificateImage, $imBox, 0, 0, 0, 0, 1024, 722);
             imagettftext($certificateImage, 20, 0, 170, 390, $textColor, $fontFile, $name);
             imagettftext($certificateImage, 20, 0, 170, 420, $textColor, $fontFile, 'Вы прошли тест ' . $testfile);
             imagettftext($certificateImage, 20, 0, 170, 450, $textColor, $fontFile, 'С результатом ' . $testResult . '%');
-            header('Content-Type: image/jpeg');
             imagejpeg($certificateImage, 'certificate.jpg');
             imagedestroy($certificateImage);
         }
