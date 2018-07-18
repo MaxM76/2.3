@@ -69,6 +69,12 @@ switch ($action) {
         if (!empty($_GET['max'])) {
             $maxGoals = $_GET['max'];
         }
+        if (!empty($_GET['testfile'])) {
+            $testfile = $_GET['testfile'];
+        }
+        else {
+            $testfile = '';
+        }
         if ($maxGoals == 0) {
             exit('Ошибка подсчета максимально возможного результата');
         }
@@ -77,28 +83,22 @@ switch ($action) {
         $sumGoals = array_sum(makeRecursive($goals));
         $testResult = $sumGoals / $maxGoals * 100;
 
-
-echo phpinfo();
-
         if (!empty($_GET['name']))
         {
             $name = $_GET['name'];
+            putenv('GDFONTPATH=' . realpath('.'));
             $certificateImage = imagecreatetruecolor(1024, 722);
-            $backColor = imagecolorallocate($certificateImage, 255, 224, 221);
             $textColor = imagecolorallocate($certificateImage, 0, 0, 0);
-            $fontFile = 'Xiomara-Script.ttf';
+            $fontFile = 'xsfont.ttf';
             $imBox = imagecreatefromjpeg('blank.jpg');
-            imagefill($certificateImage, 0, 0, $backColor);
-            imagecopy($certificateImage, $imBox, 0, 0, 0, 0, 565, 800);
-            imagettftext($certificateImage, 20, 0, 170, 392, $textColor, $fontFile, $name);
-            imagettftext($certificateImage, 20, 0, 170, 420, $textColor, $fontFile, 'Вы прошли тест' . $testfile);
-            imagettftext($certificateImage, 20, 0, 170, 420, $textColor, $fontFile, 'С результатом ' . $testResult);
-            //header('Content-Type: image/jpeg');
+            imagecopy($certificateImage, $imBox, 0, 0, 0, 0, 1024, 722);
+            imagettftext($certificateImage, 20, 0, 170, 390, $textColor, $fontFile, $name);
+            imagettftext($certificateImage, 20, 0, 170, 420, $textColor, $fontFile, 'Вы прошли тест ' . $testfile);
+            imagettftext($certificateImage, 20, 0, 170, 450, $textColor, $fontFile, 'С результатом ' . $testResult . '%');
+            header('Content-Type: image/jpeg');
             imagejpeg($certificateImage, 'certificate.jpg');
             imagedestroy($certificateImage);
         }
-
-
         echo 'Ваш результат: ' . $testResult . '%<br>';
         exit('Тест пройден');
     default:
@@ -166,6 +166,7 @@ echo phpinfo();
         ?>
       <input type="hidden" name="action" value="calc">
       <input type="hidden" name="max" value="<?= $maxSum ?>">
+      <input type="hidden" name="testfile" value="<?= $testfile ?>">
       <input type="submit" value="Посчитать результаты">
     </form>
 
