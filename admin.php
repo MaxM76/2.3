@@ -7,6 +7,7 @@ if (isset($_POST) && isset($_FILES) && isset($_FILES['userfile'])) {
     if ($pathParts['extension'] === 'json') {
         move_uploaded_file($tmpFile, $testDir . $filename);
         header('Location: ' . 'list.php');
+        die;
        // echo 'Тест загружен!';
     }
     else {

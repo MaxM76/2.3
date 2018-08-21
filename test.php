@@ -46,11 +46,9 @@ switch ($action) {
             $testfile = $jsonfileList[$testNmb - 1];
         }
         else {
-            header("HTTP/1.0 404 Not Found");
+            header($_SERVER['SERVER_PROTOCOL'] . " 404 Not Found");
             exit;
-            /*echo '<a href="admin.php">Перейти к форме загрузки тестов</a><br>';
-            echo '<a href="list.php">Перейти к форме выбора теста</a>';
-            exit('Тест не найден');*/
+
         }
 
 //        $testfile = 'laws.json';
@@ -83,8 +81,7 @@ switch ($action) {
         $sumGoals = array_sum(makeRecursive($goals));
         $testResult = $sumGoals / $maxGoals * 100;
 
-        if (!empty($_GET['name']))
-        {
+        if (!empty($_GET['name'])) {
             $name = $_GET['name'];
             putenv('GDFONTPATH=' . realpath('.'));
             $certificateImage = imagecreatetruecolor(1024, 722);
@@ -95,11 +92,15 @@ switch ($action) {
             imagettftext($certificateImage, 20, 0, 170, 390, $textColor, $fontFile, $name);
             imagettftext($certificateImage, 20, 0, 170, 420, $textColor, $fontFile, 'Вы прошли тест ' . $testfile);
             imagettftext($certificateImage, 20, 0, 170, 450, $textColor, $fontFile, 'С результатом ' . $testResult . '%');
-            imagejpeg($certificateImage, 'certificate.jpg');
+//            imagejpeg($certificateImage, 'certificate.jpg');
+            header('Content-Type: image/jpeg');
+            imagejpeg($certificateImage);
             imagedestroy($certificateImage);
         }
-        echo 'Ваш результат: ' . $testResult . '%<br>';
-        exit('Тест пройден');
+        die;
+        //break;
+        /*echo 'Ваш результат: ' . $testResult . '%<br>';
+        exit('Тест пройден');*/
     default:
         echo '<a href="admin.php">Перейти к форме загрузки тестов</a><br>';
         exit('Ошибка передачи параметра действия');
